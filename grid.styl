@@ -5,6 +5,8 @@ if grid.precision is 0
 else
   pr = grid.precision
 
+cellClassName = 'cell'
+
 value-calc(value)
   u = unit(value);
   if body-font-size is not 0
@@ -63,7 +65,7 @@ grid-props(direction = 'row', cells-align = 'top', justify = '')
   if justify is 'end'
     justify-content flex-end
 
-cell(i, cols = gird.columns, align = '', g = columnGutter, r = rowGutter)
+cell(i, cols = grid.columns, align = '', g = grid.gutters.column, r = grid.gutters.row)
   if g != 0
     flex-basis: s('calc(%s - %s)', basis-calc(i, cols), value-calc(g))
   else
@@ -85,7 +87,7 @@ cell(i, cols = gird.columns, align = '', g = columnGutter, r = rowGutter)
   if align is 'center'
     align-self center
 
-cell-offset(i = 1, cols = grid.columns, g = columnGutter)
+cell-offset(i = 1, cols = grid.columns, g = grid.gutters.column)
   if g is not 0
     margin-left: s('calc(%s + %s)', basis-calc(i, cols), value-calc(g) / 2) !important
   else
@@ -115,7 +117,7 @@ stack()
   cell(1, 1)
 
 
-grid-cell-classes-generator(cols = grid.columns, g = columnGutter, cellClass = cellClassName)
+grid-cell-classes-generator(cols = grid.columns, g = grid.gutters.column, cellClass = cellClassName)
   for key, value in grid.breakpoints
     @media screen and (min-width: value-calc(value))
       for i in range(1, cols, 1)
@@ -124,7 +126,7 @@ grid-cell-classes-generator(cols = grid.columns, g = columnGutter, cellClass = c
         .{cellClass}-offset-{key}-{i}
           cell-offset(i, cols, g)
 
-grid-classes-generator(cols = grid.columns, g = columnGutter, gridClass = grid.name, cellClass = cellClassName)
+grid-classes-generator(cols = grid.columns, g = grid.gutters.column, gridClass = grid.name, cellClass = cellClassName)
   for key, value in grid.breakpoints
     @media screen and (min-width: value-calc(value))
       for i in range(1, cols, 1)
