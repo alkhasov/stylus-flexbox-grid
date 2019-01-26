@@ -1,0 +1,180 @@
+@import 'config.styl'
+
+if grid.precision is 0
+  pr = 10
+else
+  pr = grid.precision
+
+value-calc(value)
+  u = unit(value);
+  if body-font-size is not 0
+    if (u is 'rem') {
+      return round(unit(value, u), pr);
+    } else {
+      return round(unit(value / body-font-size, 'rem'), pr);
+    }
+  else
+    if (u is 'px') {
+      return unit(value, u);
+    } else {
+      return unit(value, 'px');
+    }
+
+basis-calc(i, cols)
+  r = 100 * (i / cols)
+  return s('%s%', round(r, pr))
+
+column-gutter(g)
+  margin: s("0 %s", value-calc(g / 2))
+
+gutters(r, g)
+  margin: s("%s %s", value-calc(r / 2), value-calc(g / 2))
+
+equal-gutters(g)
+  margin: s("%s", value-calc(g / 2))
+
+row-gutter(r)
+  margin: s("%s 0", value-calc(r / 2))
+
+
+grid-props(direction = 'row', cells-align = 'top', justify = '')
+  display flex
+  flex-wrap wrap
+  if cells-align is 'top'
+    align-items flex-start
+  if cells-align is 'bottom'
+    align-items flex-end
+  if cells-align is 'center'
+    align-items center
+  if cells-align is 'stretch'
+    align-items stretch
+  if direction is 'row'
+    flex-direction row
+  if direction is 'row-reverse'
+    flex-direction row-reverse
+  if direction is 'column'
+    flex-direction column
+  if direction is 'column-reverse'
+    flex-direction column-reverse
+  if justify is 'center'
+    justify-content center
+  if justify is 'start'
+    justify-content flex-start
+  if justify is 'end'
+    justify-content flex-end
+
+cell(i, cols = gird.columns, align = '', g = columnGutter, r = rowGutter)
+  if g != 0
+    flex-basis: s('calc(%s - %s)', basis-calc(i, cols), value-calc(g))
+  else
+    flex-basis: basis-calc(i, cols)
+      
+  if r == g
+    equal-gutters(g)
+  else if g != 0 && r == 0
+    column-gutter(g)
+  else if r != 0 && g == 0
+    row-gutter(r)
+  else
+    gutters(r, g)   
+
+  if align is 'top'
+    align-self flex-start
+  if align is 'bottom'
+    align-self flex-end
+  if align is 'center'
+    align-self center
+
+cell-offset(i = 1, cols = grid.columns, g = columnGutter)
+  if g is not 0
+    margin-left: s('calc(%s + %s)', basis-calc(i, cols), value-calc(g) / 2) !important
+  else
+    margin-left: basis-calc(i, cols) !important
+
+center(value, pad = null)
+  margin-left auto
+  margin-right auto
+  width 100%
+  u = unit(value)
+  if (u is 'rem' or u is '%')
+    max-width round(unit(value, u),pr)
+  else
+    max-width value-calc(value)
+  if (pad is null)
+    return
+  else
+    p = unit(pad)
+    if (p is 'rem' or p is '%')
+      padding-left  round(unit(pad, p), pr)
+      padding-right  round(unit(pad, p), pr)
+    else
+      padding-left value-calc(pad)
+      padding-right value-calc(pad)
+
+stack()
+  cell(1, 1)
+
+
+grid-cell-classes-generator(cols = grid.columns, g = columnGutter, cellClass = cellClassName)
+  for key, value in grid.breakpoints
+    @media screen and (min-width: value-calc(value))
+      for i in range(1, cols, 1)
+        .{cellClass}-{key}-{i}
+          cell(i, cols, g)
+        .{cellClass}-offset-{key}-{i}
+          cell-offset(i, cols, g)
+
+grid-classes-generator(cols = grid.columns, g = columnGutter, gridClass = grid.name, cellClass = cellClassName)
+  for key, value in grid.breakpoints
+    @media screen and (min-width: value-calc(value))
+      for i in range(1, cols, 1)
+        .{gridClass}-{key}-{i} > [class~={cellClass}]
+          cell(i, cols, g)
+
+// grid classes
+
+.{grid.name}-top
+  grid-props(cells-align: 'top')
+
+.{grid.name}-bottom
+  grid-props(cells-align: 'bottom')
+
+.{grid.name}-center
+  grid-props(cells-align: 'center')
+
+.{grid.name}-stretch
+  grid-props(cells-align: 'stretch')
+
+.{grid.name}-justify-center
+  justify-content center
+
+.{grid.name}-justify-start
+  justify-content flex-start
+
+.{grid.name}-justify-end
+  justify-content flex-end
+
+.{grid.name}-row
+  grid-props(direction: 'row')
+
+.{grid.name}-row-reverse
+  grid-props(direction: 'row-reverse')
+
+.{grid.name}-column
+  grid-props(direction: 'column')
+
+.{grid.name}-column-reverse
+  grid-props(direction: 'column-reverse')
+
+grid-classes-generator()
+
+.{cellClassName}-top
+  align-self flex-start
+
+.{cellClassName}-bottom
+  align-self flex-end
+
+.{cellClassName}-center
+  align-self center
+
+grid-cell-classes-generator()
