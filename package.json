@@ -1,0 +1,26 @@
+{
+  "name": "stylus-flexbox-grid",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Maga Alkhasov <maga@alkhasov.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/musewick/stylus-flexbox-grid"
+  },
+  "keywords": [
+    "flexbox",
+    "grid",
+    "stylus"
+  ],
+  "scripts": {
+    "build": "gulp"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-stylus": "^2.7.0"
+  }
+}

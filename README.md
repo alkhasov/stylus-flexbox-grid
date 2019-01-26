@@ -34,10 +34,14 @@ grid = {
 
 ### Tasks
 
+- [x] Build grid on rem's and px's
+- [x] Precision of values
+- [x] Separate options for building the gutters
 - [x] Configuration file
+- [x] Building dist
 - [ ] Defalut config inside grid
 - [ ] Media query min-witdth\max-width option in settings
 
 ---
 
-Generate functions based on fork [s-grid](https://github.com/juliancwirko/s-grid)
+Stylus functions based on fork [s-grid](https://github.com/juliancwirko/s-grid)
