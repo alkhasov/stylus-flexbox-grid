@@ -64,6 +64,8 @@ grid-props(direction = 'row', cells-align = 'top', justify = '')
     justify-content flex-start
   if justify is 'end'
     justify-content flex-end
+  if grid.clearWidth is true
+    margin: s("0 -%s", value-calc(grid.gutters.column / 2))
 
 cell(i, cols = grid.columns, align = '', g = grid.gutters.column, r = grid.gutters.row)
   if g != 0
