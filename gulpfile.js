@@ -4,8 +4,9 @@ const minify = require('gulp-clean-css');
 const autoprefixer = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
+const inject = require('gulp-inject-string');
 
-const inputFile = './grid.styl';
+const inputFile = './src/grid.styl';
 const outputFileName = 'flexbox-grid';
 
 function common() {
@@ -20,6 +21,11 @@ function common() {
     )
     .pipe(rename({ basename: outputFileName }))
     .pipe(sourcemaps.write('.'))
+    .pipe(
+      inject.prepend(
+        `/* Generated with https://github.com/musewick/stylus-flexbox-grid */\n\n`
+      )
+    )
     .pipe(dest('dist'));
 }
 
@@ -52,6 +58,11 @@ function minified() {
     )
     .pipe(rename({ basename: outputFileName, suffix: '.min' }))
     .pipe(sourcemaps.write('.'))
+    .pipe(
+      inject.prepend(
+        `/* Generated with https://github.com/musewick/stylus-flexbox-grid */`
+      )
+    )
     .pipe(dest('dist'));
 }
 
